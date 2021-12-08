@@ -1,0 +1,28 @@
+{
+  "name": "User Scripts",
+  "identifier": "io.iina.user-scripts",
+  "version": "0.1.0",
+  "ghVersion": 1,
+  "ghRepo": "iina/plugin-user-scripts",
+  "description": "User Scripts for IINA",
+  "author": {
+    "name": "Collider LI",
+    "email": "lhc@iina.io",
+    "url": "https://iina.io"
+  },
+  "entry": "dist/index.js",
+  "globalEntry": "dist/global.js",
+  "permissions": [
+    "show-osd",
+    "network-request",
+    "video-overlay",
+    "file-system"
+  ],
+  "allowedDomains": ["iina.io", "*.iina.io"],
+  "preferencesPage": "pref.html",
+  "preferenceDefaults": {
+    "keyNum": 10,
+    "keyString": "hello",
+    "keyBool": true
+  }
+}
