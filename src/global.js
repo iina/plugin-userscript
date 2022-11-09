@@ -52,7 +52,7 @@ function addListeners() {
 window.loadFile("dist/standalone/index.html");
 addListeners();
 window.setProperty({ title: "User Scripts" });
-window.open();
+// window.open();
 
 menu.addItem(
   menu.item("Manage User Scripts...", () => {
