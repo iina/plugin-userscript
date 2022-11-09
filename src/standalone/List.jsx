@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 // import { css } from "@emotion/css";
 import { Link } from "react-router-dom";
+import { Button, Level, Form } from "react-bulma-components";
+import { css } from "@emotion/css";
 import * as msg from "../msg";
 import { uuidv4 } from "../utils";
 
@@ -52,37 +54,73 @@ const List = () => {
     setScripts({ list });
   };
 
-  // const tableStyle = css`
-  //   td {
-  //     padding: 8px;
-  //   }
-  // `;
+  const style = css`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+
+    .top {
+      padding: 16px;
+      margin: 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    }
+
+    .list {
+      width: 100%;
+      height: 100%;
+      overflow: scroll;
+
+      .table th {
+        text-align: left;
+      }
+    }
+  `;
 
   return (
-    <div>
-      <h1>User Scripts</h1>
-      <button onClick={addScript}>New</button>
-      <table className={"a"}>
-        <thead>
-          <tr>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {scripts.list.map((script) => (
+    <div className={style}>
+      <div className="top">
+        <p>
+          IINA User Scripts work like those in browsers - they let you use the
+          IINA plugin API to add and share desired functionalities without the
+          hassle of creating a plugin package.
+        </p>
+        <Button
+          onClick={addScript}
+          color="primary"
+          size="small"
+          style={{ float: "right" }}
+        >
+          New Script
+        </Button>
+      </div>
+      <div className="list">
+        <table className="table is-fullwidth">
+          <thead>
             <tr>
-              <td>{script.name}</td>
-              <td>
-                <Link to={`/edit/${script.id}`}>Edit</Link>
-                <a href="#" onClickCapture={delScript(script)}>
-                  Delete
-                </a>
-              </td>
+              <th>User Scripts</th>
+              <th width="60"></th>
+              <th width="60"></th>
             </tr>
-          ))}
-          <tr></tr>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {scripts.list.map((script) => (
+              <tr>
+                <td>{script.name}</td>
+                <td>
+                  <Link to={`/edit/${script.id}`}>Edit</Link>
+                </td>
+                <td>
+                  <a href="#" onClickCapture={delScript(script)}>
+                    Delete
+                  </a>
+                </td>
+              </tr>
+            ))}
+            <tr></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

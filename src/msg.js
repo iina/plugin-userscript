@@ -6,3 +6,7 @@ export const GET_SCRIPT_CONTENT = "get-script-content";
 export const GET_SCRIPT_CONTENT_DONE = "get-script-content-done";
 export const SET_SCRIPT_CONTENT = "set-script-content";
 export const SET_SCRIPT_CONTENT_DONE = "set-script-content-done";
+export const GET_SCRIPT_INFO = "get-script-info";
+export const GET_SCRIPT_INFO_DONE = "get-script-info-done";
+export const SET_SCRIPT_INFO = "set-script-info";
+export const SET_SCRIPT_INFO_DONE = "set-script-info-done";

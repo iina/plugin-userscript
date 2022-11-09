@@ -1,6 +1,6 @@
 const { menu, file, console } = iina;
 
-const SCRIPT_LIST_PATH = "@data/script-list.json";
+export const SCRIPT_LIST_PATH = "@data/script-list.json";
 
 export function loadUserScripts() {
   function createScriptList() {
@@ -27,6 +27,6 @@ export function uuidv4() {
     (
       c ^
       (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-    ).toString(16)
+    ).toString(16),
   );
 }

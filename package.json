@@ -11,9 +11,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "parcel": "^2.0.0",
+    "parcel": "^2.7.0",
     "parcel-optimizer-webview": "git+https://github.com/iina/parcel-optimizer-webview.git",
     "prettier": "^2.2.1",
+    "process": "^0.11.10",
     "react": "^17.0.2",
     "react-bulma-components": "^4.0.7",
     "react-dom": "^17.0.2",
