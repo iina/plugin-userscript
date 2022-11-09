@@ -114,6 +114,7 @@ const Editor = () => {
             <Form.Input
               value={info.name}
               onChange={haneleNameChange}
+              size="small"
             ></Form.Input>
           </Level.Item>
         </Level.Side>

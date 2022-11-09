@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 // import { css } from "@emotion/css";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Button, Level, Form } from "react-bulma-components";
 import { css } from "@emotion/css";
 import * as msg from "../msg";
@@ -31,6 +31,8 @@ const List = () => {
     load();
   }, []);
 
+  const history = useHistory();
+
   const addScript = async () => {
     console.log(11111);
     const newScript = {
@@ -40,6 +42,7 @@ const List = () => {
     const list = [...scripts.list, newScript];
     await saveUserScripts(list);
     setScripts({ list });
+    history.push(`/edit/${newScript.id}`);
   };
 
   const delScript = (script) => async () => {

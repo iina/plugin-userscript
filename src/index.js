@@ -11,5 +11,11 @@ for (const { id, name } of scripts) {
     console.log(`File ${path} doesn't exist; skipped.`);
   }
   const content = iina.file.read(path);
-  eval(content);
+
+  try {
+    const func = new Function("iina", content);
+    func(iina);
+  } catch (e) {
+    iina.console.log(`Error running script "${name}", id=${id}: ${e}`);
+  }
 }
