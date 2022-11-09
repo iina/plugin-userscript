@@ -1,9 +1,9 @@
 {
   "name": "User Scripts",
-  "identifier": "io.iina.user-scripts",
+  "identifier": "io.iina.user-script",
   "version": "0.1.0",
   "ghVersion": 1,
-  "ghRepo": "iina/plugin-user-scripts",
+  "ghRepo": "iina/plugin-userscript",
   "description": "User Scripts for IINA",
   "author": {
     "name": "Collider LI",
