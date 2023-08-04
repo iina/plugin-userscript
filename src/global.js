@@ -55,9 +55,15 @@ window.setProperty({ title: "User Scripts" });
 // window.open();
 
 menu.addItem(
-  menu.item("Manage User Scripts...", () => {
-    window.open();
-  }),
+  menu.item(
+    "Manage User Scripts...",
+    () => {
+      window.open();
+    },
+    {
+      keyBinding: "Meta+Shift+U",
+    },
+  ),
 );
 
 function saveUserScripts(scripts) {

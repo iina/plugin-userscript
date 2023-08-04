@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from "react";
 // import { css } from "@emotion/css";
 import { Link, useHistory } from "react-router-dom";
-import { Button, Level, Form } from "react-bulma-components";
 import { css } from "@emotion/css";
 import * as msg from "../msg";
 import { uuidv4 } from "../utils";
+
+import Button from "@mui/joy/Button";
+import ButtonGroup from "@mui/joy/ButtonGroup";
+import Table from "@mui/joy/Table";
+import Card from "@mui/joy/Card";
+import CardContent from "@mui/joy/CardContent";
+import Typography from "@mui/joy/Typography";
+import Stack from "@mui/joy/Stack";
+import Sheet from "@mui/joy/Sheet";
+
+import Add from "@mui/icons-material/Add";
+import Edit from "@mui/icons-material/Edit";
+import Delete from "@mui/icons-material/Delete";
+import Code from "@mui/icons-material/Code";
 
 async function loadUserScripts() {
   return new Promise((resolve, reject) => {
@@ -46,6 +59,9 @@ const List = () => {
   };
 
   const delScript = (script) => async () => {
+    if (!window.confirm(`Are you sure to delete ${script.name}?`)) {
+      return;
+    }
     const list = scripts.list.filter((s) => s !== script);
     await saveUserScripts(list);
     setScripts({ list });
@@ -59,72 +75,90 @@ const List = () => {
 
   const style = css`
     display: flex;
-    flex-direction: column;
     width: 100%;
     height: 100vh;
-
-    .top {
-      padding: 16px;
-      margin: 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-    }
-
-    .list {
-      width: 100%;
-      height: 100%;
-      overflow: scroll;
-
-      .table th {
-        text-align: left;
-      }
-    }
   `;
 
-  return (
-    <div className={style}>
-      <div className="top">
-        <p>
+  const card = (
+    <div style={{ padding: "8px" }}>
+      <Card variant="outlined" size="sm">
+        <Typography level="title-md">About User Scripts</Typography>
+        <Typography level="body-sm">
           IINA User Scripts work like those in browsers - they let you use the
           IINA plugin API to add and share desired functionalities without the
           hassle of creating a plugin package.
-        </p>
-        <Button
-          onClick={addScript}
-          color="primary"
-          size="small"
-          style={{ float: "right" }}
-        >
-          New Script
-        </Button>
-      </div>
-      <div className="list">
-        <table className="table is-fullwidth">
+        </Typography>
+        <CardContent orientation="horizontal">
+          <Button
+            startDecorator={<Add />}
+            onClick={addScript}
+            size="sm"
+            style={{ float: "right" }}
+          >
+            New Script
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  const scriptList = (
+    <div style={{ padding: "0 8px 8px 8px" }}>
+      <Sheet
+        variant="outlined"
+        sx={{ width: "100%", boxShadow: "sm", borderRadius: "sm" }}
+      >
+        <Table>
           <thead>
             <tr>
-              <th>User Scripts</th>
-              <th width="60"></th>
-              <th width="60"></th>
+              <th>Script Name</th>
+              <th></th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {scripts.list.map((script) => (
               <tr>
-                <td>{script.name}</td>
                 <td>
-                  <Link to={`/edit/${script.id}`}>Edit</Link>
+                  <Typography startDecorator={<Code />}>
+                    {script.name}
+                  </Typography>
                 </td>
+                <td></td>
                 <td>
-                  <a href="#" onClickCapture={delScript(script)}>
-                    Delete
-                  </a>
+                  <ButtonGroup size="sm">
+                    <Button
+                      startDecorator={<Edit />}
+                      variant="soft"
+                      component={Link}
+                      to={`/edit/${script.id}`}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      startDecorator={<Delete />}
+                      variant="soft"
+                      color="danger"
+                      onClick={delScript(script)}
+                    >
+                      Delete
+                    </Button>
+                  </ButtonGroup>
                 </td>
               </tr>
             ))}
             <tr></tr>
           </tbody>
-        </table>
-      </div>
+        </Table>
+      </Sheet>
     </div>
+  );
+
+  return (
+    <Stack spacing={0}>
+      {card}
+      {scriptList}
+    </Stack>
   );
 };
 

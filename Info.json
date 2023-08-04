@@ -1,8 +1,8 @@
 {
   "name": "User Scripts",
   "identifier": "io.iina.user-script",
-  "version": "0.1.0",
-  "ghVersion": 3,
+  "version": "0.9.0",
+  "ghVersion": 4,
   "ghRepo": "iina/plugin-userscript",
   "description": "User Scripts for IINA",
   "author": {

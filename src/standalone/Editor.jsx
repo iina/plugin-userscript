@@ -1,24 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { css } from "@emotion/css";
 import CodeMirror from "@uiw/react-codemirror";
-import { Compartment } from "@codemirror/state";
 import { javascript } from "@codemirror/lang-javascript";
-import { Button, Level, Form } from "react-bulma-components";
+import { xcodeLight, xcodeDark } from "@uiw/codemirror-theme-xcode";
 
 import * as msg from "../msg";
 
-import { EditorView } from "@codemirror/view";
+import { useColorScheme } from "@mui/joy/styles";
+import Button from "@mui/joy/Button";
+import ButtonGroup from "@mui/joy/ButtonGroup";
+import Input from "@mui/joy/Input";
+import Card from "@mui/joy/Card";
+import CardContent from "@mui/joy/CardContent";
+import Typography from "@mui/joy/Typography";
+import Stack from "@mui/joy/Stack";
+import Sheet from "@mui/joy/Sheet";
 
-const FontSizeTheme = EditorView.theme({
-  "&": {
-    fontSize: "11pt",
-  },
-});
-
-const FontSizeThemeExtension = [FontSizeTheme];
-
-const language = new Compartment();
+import ArrowBack from "@mui/icons-material/ArrowBack";
+import Save from "@mui/icons-material/Save";
+import Done from "@mui/icons-material/Done";
+import { Alert } from "@mui/joy";
 
 async function getScriptContent(id) {
   return new Promise((resolve, reject) => {
@@ -42,7 +44,6 @@ async function setScriptContent(id, content) {
 }
 
 async function setScriptName(id, name) {
-  console.log(name);
   return new Promise((resolve, reject) => {
     iina.postMessage(msg.SET_SCRIPT_INFO, { id, name });
     iina.onMessage(msg.SET_SCRIPT_INFO_DONE, (s) => resolve(s));
@@ -53,6 +54,18 @@ const Editor = () => {
   const { id } = useParams();
   const [code, setCode] = useState("");
   const [info, setInfo] = useState({});
+  const [notif, setNotif] = useState(null);
+  const notifTimeout = useRef(null);
+
+  function postNotification(message, type = "success") {
+    if (notifTimeout.current) {
+      clearTimeout(notifTimeout.current);
+    }
+    setNotif({ message, type });
+    notifTimeout.current = setTimeout(() => {
+      setNotif(null);
+    }, 2000);
+  }
 
   useEffect(() => {
     const load = async () => {
@@ -66,71 +79,127 @@ const Editor = () => {
 
   const saveCode = async () => {
     await setScriptContent(id, encodeURI(code));
+    postNotification("Saved.");
   };
 
   const haneleNameChange = async (event) => {
     const name = event.target.value;
-    await setScriptName(id, name);
     setInfo({ ...info, name });
   };
 
-  const style = css`
+  const commitNameChange = async () => {
+    await setScriptName(id, info.name);
+    postNotification("Name updated.");
+  };
+
+  const Toolbar = () => (
+    <Sheet
+      variant="outlined"
+      sx={{ width: "100%", boxShadow: "sm", borderRadius: "sm", p: "8px" }}
+    >
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        spacing={2}
+      >
+        <ButtonGroup size="sm">
+          <Button
+            startDecorator={<ArrowBack />}
+            variant="soft"
+            component={Link}
+            to="/"
+          >
+            Exit
+          </Button>
+          <Button startDecorator={<Save />} onClick={saveCode}>
+            Save
+          </Button>
+        </ButtonGroup>
+        <Input
+          variant="outlined"
+          value={info.name}
+          onChange={haneleNameChange}
+          endDecorator={
+            <Button color="neutral" onClick={commitNameChange}>
+              <Done />
+            </Button>
+          }
+        />
+      </Stack>
+    </Sheet>
+  );
+
+  const { mode, systemMode } = useColorScheme();
+  const colorMode = systemMode || mode;
+
+  const notificationContainer = css`
+    position: fixed;
+    z-index: 100;
+    right: 16px;
+    bottom: 16px;
+    width: 240px;
+  `;
+
+  const container = css`
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: 100vh;
+    height: 100%;
 
-    .top {
-      padding: 16px;
-      margin: 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    .cm-outer-container {
+      flex: 1;
+      height: 100%;
     }
 
-    .editor {
-      width: 100%;
+    .cm-editor {
       height: 100%;
-      overflow: scroll;
+      position: relative;
+    }
+
+    .cm-scroller {
+      position: absolute !important;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
     }
   `;
 
   return (
-    <div className={style}>
-      <Level className="top" breakpoint="mobile">
-        <Level.Side align="left">
-          <Level.Item>
-            <Button.Group hasAddons={true} size="small">
-              <Button to="/" renderAs={Link} color="primary">
-                Back
-              </Button>
-              <Button onClick={saveCode}>Save</Button>
-            </Button.Group>
-          </Level.Item>
-        </Level.Side>
-        <Level.Side align="right">
-          <Level.Item>
-            <h4>Script Name</h4>
-          </Level.Item>
-          <Level.Item>
-            <Form.Input
-              value={info.name}
-              onChange={haneleNameChange}
-              size="small"
-            ></Form.Input>
-          </Level.Item>
-        </Level.Side>
-      </Level>
-      <CodeMirror
-        className="editor"
-        value={code}
-        options={{
-          mode: "js",
-        }}
-        lazyLoadMode={false}
-        extensions={[language.of(javascript()), FontSizeThemeExtension]}
-        onChange={(value) => {
-          setCode(value);
-        }}
-      />
+    <div style={{ padding: "8px", height: "100vh" }}>
+      <div className={notificationContainer}>
+        {notif === null ? null : (
+          <Alert variant="solid" invertedColors color={notif.type}>
+            <Typography level="body-sm">{notif.message}</Typography>
+          </Alert>
+        )}
+      </div>
+      <div className={container}>
+        <Toolbar />
+        <Sheet
+          variant="outlined"
+          sx={{
+            width: "100%",
+            boxShadow: "sm",
+            borderRadius: "sm",
+            p: "8px",
+            height: "100%",
+            marginTop: "8px",
+          }}
+        >
+          <CodeMirror
+            className="cm-outer-container"
+            value={code}
+            lazyLoadMode={false}
+            theme={colorMode === "dark" ? xcodeDark : xcodeLight}
+            extensions={[javascript({ jsx: true })]}
+            onChange={(value) => {
+              setCode(value);
+            }}
+          />
+        </Sheet>
+      </div>
     </div>
   );
 };
