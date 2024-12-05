@@ -1,6 +1,6 @@
 {
   "name": "iina-plugin-user-scripts",
-  "version": "1.0.0",
+  "version": "0.9.1",
   "description": "",
   "main": "src/index.js",
   "scripts": {

@@ -1,14 +1,13 @@
 {
   "name": "User Scripts",
   "identifier": "io.iina.user-script",
-  "version": "0.9.0",
-  "ghVersion": 4,
+  "version": "0.9.1",
+  "ghVersion": 5,
   "ghRepo": "iina/plugin-userscript",
   "description": "User Scripts for IINA",
   "author": {
-    "name": "Collider LI",
-    "email": "lhc@iina.io",
-    "url": "https://iina.io"
+    "name": "IINA Developers",
+    "url": "https://github.com/iina/plugin-userscript"
   },
   "entry": "dist/index.js",
   "globalEntry": "dist/global.js",

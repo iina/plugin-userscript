@@ -47,10 +47,14 @@ const List = () => {
   const history = useHistory();
 
   const addScript = async () => {
-    console.log(11111);
+    let n = 1;
+    while (scripts.list.some((s) => s.name === `Untitled_${n}`)) {
+      n++;
+    }
+    const name = `Untitled_${n}`;
     const newScript = {
       id: uuidv4(),
-      name: `script_${Math.random()}`,
+      name,
     };
     const list = [...scripts.list, newScript];
     await saveUserScripts(list);
@@ -59,6 +63,7 @@ const List = () => {
   };
 
   const delScript = (script) => async () => {
+    console.log("Delete", script);
     if (!window.confirm(`Are you sure to delete ${script.name}?`)) {
       return;
     }
