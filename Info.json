@@ -18,10 +18,4 @@
     "file-system"
   ],
   "allowedDomains": ["iina.io", "*.iina.io"],
-  "preferencesPage": "pref.html",
-  "preferenceDefaults": {
-    "keyNum": 10,
-    "keyString": "hello",
-    "keyBool": true
-  }
 }
