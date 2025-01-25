@@ -18,4 +18,5 @@
     "file-system"
   ],
   "allowedDomains": ["iina.io", "*.iina.io"],
+  "helpPage": "help.html"
 }
