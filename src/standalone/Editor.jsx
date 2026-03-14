@@ -120,7 +120,6 @@ const Editor = () => {
           variant="outlined"
           value={info.name}
           onChange={haneleNameChange}
-          autoFocus={true}
           endDecorator={
             <Button color="neutral" onClick={commitNameChange}>
               <Done />
