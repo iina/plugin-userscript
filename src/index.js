@@ -16,6 +16,6 @@ for (const { id, name } of scripts) {
     const func = new Function("iina", content);
     func(iina);
   } catch (e) {
-    iina.console.log(`Error running script "${name}", id=${id}: ${e}`);
+    iina.console.error(`Error running script "${name}", id=${id}: ${e}`);
   }
 }
