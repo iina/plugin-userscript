@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { css } from "@emotion/css";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
-import { xcodeLight, xcodeDark } from "@uiw/codemirror-theme-xcode";
+import { xcodeLightInit, xcodeDarkInit } from "@uiw/codemirror-theme-xcode";
 
 import * as msg from "../msg";
 
@@ -192,7 +192,7 @@ const Editor = () => {
             className="cm-outer-container"
             value={code}
             lazyLoadMode={false}
-            theme={colorMode === "dark" ? xcodeDark : xcodeLight}
+            theme={colorMode === "dark" ? xcodeDarkInit({settings:{lineHighlight:"#FFFFFF00"}}) : xcodeLightInit({settings:{lineHighlight:"#FFFFFF00"}})}
             extensions={[javascript({ jsx: true })]}
             onChange={(value) => {
               setCode(value);
